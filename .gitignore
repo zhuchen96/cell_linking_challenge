@@ -1,2 +1,3 @@
-/trained_models/
 *.pyc
+*.pth
+*.pt
