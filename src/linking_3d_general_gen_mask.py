@@ -478,7 +478,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, required=True, help="Weights of the trained model.") 
     parser.add_argument("--neg_num", type=int, default=50, help="Number of negative prompt points (fixed).")
     parser.add_argument("--visualize", type=bool, default=False, help="Visualize results (always deactivated for submission).")  
-    parser.add_argument("--seed", type=int, default=2023, help="Visualize results (always deactivated for submission).")  
+    parser.add_argument("--seed", type=int, default=2023, help="Seed")  
 
     args = parser.parse_args()
 

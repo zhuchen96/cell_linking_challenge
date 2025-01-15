@@ -12,7 +12,7 @@ def build_sam2():
         torch.backends.cuda.matmul.allow_tf32 = True
         torch.backends.cudnn.allow_tf32 = True
 
-    sam2_checkpoint = "trained_models/sam2.1_hiera_large.pt"
+    sam2_checkpoint = "CTC_submission/trained_models/sam2.1_hiera_large.pt"
     model_cfg = "sam2.1_hiera_l.yaml"
 
     predictor = build_sam2_video_predictor(model_cfg, sam2_checkpoint)

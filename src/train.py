@@ -27,13 +27,13 @@ from sam_med3d.utils.data_paths import img_datas
 
 # %% set up parser
 parser = argparse.ArgumentParser()
-parser.add_argument('--task_name', type=str, default='sim2')
+parser.add_argument("--task_name", type=str, required=True)
 parser.add_argument('--click_type', type=str, default='random')
 parser.add_argument('--multi_click', action='store_true', default=False)
 parser.add_argument('--model_type', type=str, default='vit_b_ori')
-parser.add_argument('--checkpoint', type=str, default='/work/scratch/zhuchen/SAM-Med3D-Updated/ckpt/sam_med3d_turbo.pth')
+parser.add_argument('--checkpoint', type=str, default='CTC_submission/trained_models/sam_med3d_turbo.pth')
 parser.add_argument('--device', type=str, default='cuda')
-parser.add_argument('--work_dir', type=str, default='/work/scratch/zhuchen/SamCeTra/work_dir')
+parser.add_argument('--work_dir', type=str, default='CTC_submission/trained_models')
 
 # train
 parser.add_argument('--num_workers', type=int, default=24)

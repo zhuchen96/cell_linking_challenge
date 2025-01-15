@@ -1,5 +1,5 @@
-# **Cell Linking Challenge - RWTH Submission (SamCeTra) - 30. Nov. 2024**
-- Autor: Zhu Chen 
+# **Cell Linking Challenge - RWTH Submission v0.1.0 - 30. Nov. 2024**
+- Autor: Zhu Chen, Johannes Stegmaier
 - Email: zhu.chen@lfb.rwth-aachen.de
 
 
@@ -18,14 +18,42 @@
 - Conda  
 - Python 3.10
 
-### **Steps to Run**  
-1. Identify the bash script for each dataset, named in the format `DatasetName-SequenceID.sh`.  
-3. Run the bash script using the following command:  
+### **Steps to Run Linking Scripts**  
+1. Clone the repository
+2. Go to the code folder
    ```bash
-   bash -i DatasetName-SequenceID.sh
+   cd src
+   ```
+3. Download the pretrained SAM2 model from [**Download**](https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt) and save it under `src/CTC_submission/trained_models`
+4. Identify the bash script for each dataset in `CTC_submission` folder, named in the format `DatasetName-SequenceID.sh`.  
+5. Run the bash script using the following command:  
+   ```bash
+   bash -i CTC_submission/DatasetName-SequenceID.sh
    ```
 
-### **Contents of the Bash Files**  
+### **Steps to Finetune SAM-Med3D**  
+1. Clone the repository
+2. Go to the code folder
+   ```bash
+   cd src
+   ```
+3. Run the following bash file to generate a new conda environment
+   ```bash
+   bash -i prepare_software.sh
+   ```  
+4. Activate the conda environment
+5. Download the pretrained SAM-Med3D model from [**Download**](https://drive.google.com/file/d/1MuqYRQKIZb4YPtEraK8zTKKpp-dUQIR9/view?usp=sharing) and save it under `src/CTC_submission/trained_models`
+6. Prepare image patches for training:  
+   ```bash
+   python preprocessing/training_data_processing.py --dataset your_dataset_name(e.g.Fluo-N3DH-CHO-01) --img_path path_to_raw_images --mask_path path_to_mask_files
+   ```
+7. Modify the path to image patches for training in `src/sam_med3d/utils/data_paths.py`. It is also possible to list several paths to train the network with more datasets.
+8. Run the training script
+   ```bash
+   python train.py --task_name your_task_name
+   ```
+
+### **Contents of the Linking Bash Files**  
 - **Environment Setup:**  
   - The script checks if required Conda environment already exists. 
   - If not, it creates a new environment and installs the packages listed in `requirements.txt`.
@@ -81,8 +109,7 @@ The algorithm generates the following outputs in the specified `ouput_sequence` 
 The algorithm includes additional functionalities for:  
 - Detecting new cells.  
 - Detecting mitosis events.  
-- Automatically correcting inaccurate linkages.
-- Detailed description of the algorithm will be available later.  
+- Automatically correcting inaccurate linkages. 
 
 ### **4. Note**
 In the submitted version, the results for all 3D datasets were generated using the mask-generation mode and the default settings of the bash scripts are configured for mask-generation mode.
@@ -92,7 +119,6 @@ In the submitted version, the results for all 3D datasets were generated using t
 ## **Training Details (3D Datasets)**
 - Missing intermediate 3D masks are generated using a fine-tuned **SAM-Med3D** model.  
 - The model is fine-tuned individually for each 3D dataset, using ~10% of the dataset’s time frames for training. 
-- Training script and detailed description of training will be available later. 
 
 ---
 

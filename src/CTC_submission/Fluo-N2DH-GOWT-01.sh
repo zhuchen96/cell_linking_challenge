@@ -22,7 +22,7 @@ echo "Environment activated: $CONDA_PREFIX"
 
 # Run the linking algorithm samcetra with eight input parameters:
 # input_sequence mask_sequence output_sequence 2d_or_3d window_size dis_threshold neighbor_dist pretrained_model-required_by_3d_mask_generation_mode 
-./samcetra.sh "../Fluo-N2DH-GOWT1/01" "../Fluo-N2DH-GOWT1/01_ERR_SEG" "../Fluo-N2DH-GOWT1/01_RES" "2d" 512 250 50 ""
+./samcetra.sh "../Data/Fluo-N2DH-GOWT1/01" "../Data/Fluo-N2DH-GOWT1/01_ERR_SEG" "../Data/Fluo-N2DH-GOWT1/01_RES" "2d" 512 250 50 ""
 
 set +e
 

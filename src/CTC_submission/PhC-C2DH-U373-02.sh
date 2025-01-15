@@ -22,7 +22,7 @@ echo "Environment activated: $CONDA_PREFIX"
 
 # Run the linking algorithm samcetra with eight input parameters:
 # input_sequence mask_sequence output_sequence 2d_or_3d window_size dis_threshold neighbor_dist pretrained_model-required_by_3d_mask_generation_mode 
-./samcetra.sh "../PhC-C2DH-U373/02" "../PhC-C2DH-U373/02_ERR_SEG" "../PhC-C2DH-U373/02_RES" "2d" 512 2500 50 ""
+./samcetra.sh "../Data/PhC-C2DH-U373/02" "../Data/PhC-C2DH-U373/02_ERR_SEG" "../Data/PhC-C2DH-U373/02_RES" "2d" 512 2500 50 ""
 
 set +e
 

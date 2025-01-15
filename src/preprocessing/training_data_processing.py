@@ -1,4 +1,5 @@
 import os
+import argparse
 import numpy as np
 import tifffile as tiff
 
@@ -12,10 +13,19 @@ def normalization(img_arr):
     img_arr = np.clip(img_arr, 1e-5, 1)
     return img_arr
 
-def main():
+def main(args):
+    dataset = args.dataset
+
+    images_path = [args.img_path]
+    masks_path = [args.mask_path]
     images = [] # list of image paths
     masks = []  # list of mask paths
 
+    output_path_img = f"../Data/Training_data/{dataset}/imagesTr"
+    output_path_mask = f"../Data/Training_data/{dataset}/labelsTr"
+    os.makedirs(output_path_img, exist_ok=True)
+    os.makedirs(output_path_mask, exist_ok=True)
+    
     crop_size = (64, 128, 128)
 
     for img_folder, mask_folder in zip(images_path, masks_path):
@@ -43,7 +53,7 @@ def main():
             ind = (img // 10) * 10 + i
             mean_value = 0
 
-            while mean_value <= 0.5: 
+            while mean_value <= 0.2: 
                 
                 rnd_start = [np.random.randint(0, max(1,mask_dim-patch_dim)) for patch_dim, mask_dim in zip(crop_size, mask_arr.shape)]
                 rnd_end = [start+patch_dim for start, patch_dim in zip(rnd_start, crop_size)]
@@ -51,14 +61,20 @@ def main():
 
                 img_tmp = image_arr[slicing]
                 mask_tmp = mask_arr[slicing]
-                #mem_tmp = membrane_arr[slicing]
 
                 mean_value = mask_tmp.mean()
 
-            tiff.imsave(f'../Data/N3DL-MDA1/imagesTr/t={ind:03d}.tif', img_tmp)
-            tiff.imsave(f'../Data/N3DL-MDA1/labelsTr/t={ind:03d}.tif', mask_tmp)
+            tiff.imwrite(os.path.join(output_path_img, f't={ind:03d}.tif'), img_tmp)
+            tiff.imwrite(os.path.join(output_path_mask, f't={ind:03d}.tif'), mask_tmp)
 
 if __name__ == "__main__":
-    images_path = ["/netshares/BiomedicalImageAnalysis/Resources/CellTrackingChallenge_UlmanNMeth/2020/Fluo-C3DL-MDA231/01"] 
-    masks_path = ["/netshares/BiomedicalImageAnalysis/Resources/CellTrackingChallenge_UlmanNMeth/2020/Fluo-C3DL-MDA231/01_ST/SEG"]
-    main()
+
+    parser = argparse.ArgumentParser(description="Run preprocessing script for training.")
+    parser.add_argument("--dataset", type=str, required=True, help="Dataset name.")
+    parser.add_argument("--img_path", type=str, required=True)    
+    parser.add_argument("--mask_path", type=str, required=True)    
+    parser.add_argument("--seed", type=int, default=2023, help="Seed")  
+    args = parser.parse_args()
+    np.random.seed(args.seed)
+    
+    main(args)
