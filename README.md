@@ -40,17 +40,17 @@
 ### **Apply the Algorithm on CTC Datasets** 
 1. Download the CTC Dataset: [**2D**](https://celltrackingchallenge.net/2d-datasets/)/[**3D**](https://celltrackingchallenge.net/3d-datasets/)
 2. Place the dataset under `Data` with the following file structure:
-```
-Data/
-|-- Fluo-C3DL-MDA231/
-    |-- 01/
-    |-- 01_ERR_SEG/
-    |-- 02/
-    |-- 02_ERR_SEG/
-|-- Other datasets.../
-src/
-README.md
-```
+   ```
+   Data/
+   |-- Fluo-C3DL-MDA231/
+      |-- 01/
+      |-- 01_ERR_SEG/
+      |-- 02/
+      |-- 02_ERR_SEG/
+   |-- Other datasets.../
+   src/
+   README.md
+   ```
 3. Identify the bash script for each dataset in `src/CTC_submission` folder, named in the format `DatasetName-SequenceID.sh`.  
 4. Run the bash script using the following command:  
    ```bash
@@ -58,16 +58,17 @@ README.md
    ```
 ### **Apply the Algorithm on Your Own Data** 
 1. Place your dataset under `Data` with the following file structure:
-```
-Data/
-|-- Your-Data-Name/
-    |-- Images/
-    |-- Masks/
-|-- Other datasets.../
-src/
-README.md
-```
+   ```
+   Data/
+   |-- Your-Data-Name/
+      |-- Images/
+      |-- Masks/
+   |-- Other datasets.../
+   src/
+   README.md
+   ```
 The files in folder `Images` should be the sequence of raw images in TIFF format, named like `t000.tif`, `t001.tif`... The files in folder `Masks` should be the sequence of segmentation masks in TIFF format, named like `mask000.tif`, `mask001.tif`... The datatype of the mask files should be uint16 and each object should have an unique integer value.
+
 2. Generate a new bash file in `src/CTC_submission`, named as `Your-Dataset-Name.sh`
    ```bash
    #!/bin/bash
