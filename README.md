@@ -18,18 +18,82 @@
 - Conda  
 - Python 3.10
 
-### **Steps to Run Linking Scripts**  
+### **Preparation Steps to Run Linking Scripts**  
 1. Clone the repository
+   ```bash
+   git clone https://github.com/zhuchen96/cell_linking_challenge.git && cd SW
+   ```
 2. Go to the code folder
    ```bash
    cd src
    ```
-3. Download the pretrained SAM2 model from [**Download**](https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt) and save it under `src/CTC_submission/trained_models`
-4. Identify the bash script for each dataset in `CTC_submission` folder, named in the format `DatasetName-SequenceID.sh`.  
-5. Run the bash script using the following command:  
+3. Run the following bash file to generate a new conda environment
+   ```bash
+   bash -i prepare_software.sh
+   ```  
+4. Activate the conda environment
+   ```bash
+   conda activate samcetra
+   ```  
+4. Download the pretrained SAM2 model from [**Download**](https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt) and save it under `src/CTC_submission/trained_models`
+
+### **Apply the Algorithm on CTC Datasets** 
+1. Download the CTC Dataset: [**2D**](https://celltrackingchallenge.net/2d-datasets/)/[**3D**](https://celltrackingchallenge.net/3d-datasets/)
+2. Place the dataset under `Data` with the following file structure:
+```
+Data/
+|-- Fluo-C3DL-MDA231/
+    |-- 01/
+    |-- 01_ERR_SEG/
+    |-- 02/
+    |-- 02_ERR_SEG/
+|-- Other datasets.../
+src/
+README.md
+```
+3. Identify the bash script for each dataset in `src/CTC_submission` folder, named in the format `DatasetName-SequenceID.sh`.  
+4. Run the bash script using the following command:  
    ```bash
    bash -i CTC_submission/DatasetName-SequenceID.sh
    ```
+### **Apply the Algorithm on Your Own Data** 
+1. Place your dataset under `Data` with the following file structure:
+```
+Data/
+|-- Your-Data-Name/
+    |-- Images/
+    |-- Masks/
+|-- Other datasets.../
+src/
+README.md
+```
+The files in folder `Images` should be the sequence of raw images in TIFF format, named like `t000.tif`, `t001.tif`... The files in folder `Masks` should be the sequence of segmentation masks in TIFF format, named like `mask000.tif`, `mask001.tif`... The datatype of the mask files should be uint16 and each object should have an unique integer value.
+2. Generate a new bash file in `src/CTC_submission`, named as `Your-Dataset-Name.sh`
+   ```bash
+   #!/bin/bash
+   set -e 
+   # deactivate virtualenv if already active 
+   if command -v conda deactivate > /dev/null; then conda deactivate; fi 
+
+   if conda info --envs | grep -q "^samcetra "; then 
+      echo "Virtual environment 'samcetra' found."
+      conda activate samcetra
+   else
+      echo "Virtual environment 'samcetra' not found, please generate the environment first"
+   fi
+   echo "Environment activated: $CONDA_PREFIX"
+
+   # Run the linking algorithm samcetra with eight input parameters:
+   # input_sequence mask_sequence output_sequence 2d_or_3d window_size dis_threshold neighbor_dist pretrained_model-required_by_3d_mask_generation_mode 
+   ./samcetra.sh "../Data/Your-Dataset-Name/Images" "../Data/Your-Dataset-Name/Masks" "../Data/Your-Dataset-Name/RES" "2d or 3d" 512 30 50 ""
+
+   set +e
+   ```
+3. Run the bash script using the following command:  
+   ```bash
+   bash -i CTC_submission/Your-Dataset-Name.sh
+   ```
+4. The result will be generated in the folder `/Data/Your-Dataset-Name/RES`
 
 ### **Steps to Finetune SAM-Med3D**  
 1. Clone the repository
@@ -42,6 +106,9 @@
    bash -i prepare_software.sh
    ```  
 4. Activate the conda environment
+   ```bash
+   conda activate samcetra
+   ```  
 5. Download the pretrained SAM-Med3D model from [**Download**](https://drive.google.com/file/d/1MuqYRQKIZb4YPtEraK8zTKKpp-dUQIR9/view?usp=sharing) and save it under `src/CTC_submission/trained_models`
 6. Prepare image patches for training:  
    ```bash
