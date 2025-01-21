@@ -67,7 +67,7 @@
    src/
    README.md
    ```
-The files in folder `Images` should be the sequence of raw images in TIFF format, named like `t000.tif`, `t001.tif`... The files in folder `Masks` should be the sequence of segmentation masks in TIFF format, named like `mask000.tif`, `mask001.tif`... The datatype of the mask files should be uint16 and each object should have an unique integer value.
+   The files in folder `Images` should be the sequence of raw images in TIFF format, named like `t000.tif`, `t001.tif`... The files in folder `Masks` should be the sequence of segmentation masks in TIFF format, named like `mask000.tif`, `mask001.tif`... The datatype of the mask files should be uint16 and each object should have an unique integer value.
 
 2. Generate a new bash file in `src/CTC_submission`, named as `Your-Dataset-Name.sh`
    ```bash
@@ -98,6 +98,9 @@ The files in folder `Images` should be the sequence of raw images in TIFF format
 
 ### **Steps to Finetune SAM-Med3D**  
 1. Clone the repository
+   ```bash
+   git clone https://github.com/zhuchen96/cell_linking_challenge.git && cd SW
+   ```
 2. Go to the code folder
    ```bash
    cd src
